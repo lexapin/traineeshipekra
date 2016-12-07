@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div>
+<h1>Вход</h1>
+    <form method = "POST" action = "{{ url_for('data') }}" name="form">
+        <table>
+            <tbody>
+                <tr>
+                    <td width = "150px"><p>login</p></td>
+                    <td><input type = "text" name="name"></td>
+                </tr>
+                <tr>
+                    <td width = "150px"><p>password</p></td>
+                    <td><input type = "password" name="pasw"></td>
+                </tr>
+                <tr>
+                    <td colspan = "2"><input type = "submit" id = "submit" value = "Войти"></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+{% endblock %}

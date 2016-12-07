@@ -1,0 +1,135 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div id="mynetwork"></div>
+<script type="text/javascript">
+
+    var nodes, edges, network;
+
+    draw();
+    reset();
+
+    function start() {
+        var container = document.getElementById('mynetwork');
+        var data = {
+            nodes: nodes,
+            edges: edges
+        };
+        var options = {
+            interaction:{
+                multiselect: true
+            }
+        }
+        network = new vis.Network(container, data, options);
+    }
+
+    function reset() {
+        if (network !== null) {
+            nodes = new vis.DataSet();
+            edges = new vis.DataSet();
+            start();
+        }
+    }
+
+    function addNode() {
+        try {
+            nodes.add({
+                id: document.getElementById('idNode').value,
+                label: document.getElementById('labelNode').value
+            });
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+
+    function updateNode() {
+        try {
+            nodes.update({
+                id: document.getElementById('idNode').value,
+                label: document.getElementById('labelNode').value
+            });
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+
+    function removeNode() {
+        try {
+            nodes.remove({id: document.getElementById('idNode').value});
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+
+    function addEdge() {
+        try {
+            edges.add({
+                id: document.getElementById('idEdge').value,
+                from: document.getElementById('fromEdge').value,
+                to: document.getElementById('toEdge').value
+            });
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+
+    function updateEdge() {
+        try {
+            edges.update({
+                id: document.getElementById('idEdge').value,
+                from: document.getElementById('fromEdge').value,
+                to: document.getElementById('toEdge').value
+            });
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+
+    function removeEdge() {
+        try {
+            edges.remove({id: document.getElementById('idEdge').value});
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+
+    function draw() {
+        nodes = new vis.DataSet([
+            {id: 1, label: 'Node 1'},
+            {id: 2, label: 'Node 2'},
+            {id: 3, label: 'Node 3'},
+            {id: 4, label: 'Node 4'},
+            {id: 5, label: 'Node 5'},
+        ]);
+        edges = new vis.DataSet([
+            {from: 1, to: 3},
+            {from: 1, to: 2},
+            {from: 1, to: 5},
+            {from: 2, to: 5},
+            {from: 2, to: 4},
+        ]);
+    }
+
+    function paint() {
+        draw();
+        start();
+    }
+    network.on("selectNode", function (params) {
+        console.log(params.nodes);
+        document.getElementById('nodeData').value = params.nodes;
+        for (id in params.nodes){
+            var node = network.body.nodes[params.nodes[id]];
+            node.setOptions({
+                color: "#ff0000"
+            });
+        }
+    });
+
+</script>
+{% endblock %}

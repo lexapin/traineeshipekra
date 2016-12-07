@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% if title %}
+        <title>{{title}}</title>
+        {% else %}
+        <title>Главная</title>
+        {% endif %}
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='styles.css') }}">
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='vis.css') }}">
+        <script type = "text/javascript" src = "{{ url_for('static', filename='vis.js') }}"></script>
+    </head>
+    <body>
+        <header><h1>ПОИСК МИНИМАЛЬНЫХ ПУТЕЙ ГРАФА</h1></header>
+        <ul class="flex-container main">
+            <li class="flex-item content">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul>
+                {% for message in messages %}
+                    <li>{{ message }} </li>
+                {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+                {% block content %}{% endblock %}
+            </li>
+            <li class="flex-item menu">
+                <button class = "addGraph" onClick = "paint()">Создать граф</button>
+                <button class = "clearGraph" onClick = "reset()">Очистить граф</button>
+                <ul class="flex-container sets">
+                    <li class="flex-item nodeSet">
+                        <section class = "nodeHeader">
+                            <p>Вершина</p>
+                        </section>
+                        <section class = "nodeContent">
+                            <input type = "text" id = "idNode" placeholder = "id">
+                            <input type = "text" id = "labelNode" placeholder = "label">
+                            <img src = "{{ url_for('static', filename='add.png') }}" width = "20%" onClick = "addNode()">
+                            <img src = "{{ url_for('static', filename='delete.png') }}" width = "20%" onClick = "removeNode()">
+                            <img src = "{{ url_for('static', filename='update.png') }}" width = "20%" onClick = "updateNode()">
+                        </section>
+                    </li>
+                    <li class="flex-item edgeSet">
+                        <section class = "edgeHeader">
+                            <p>Ребро</p>
+                        </section>
+                        <section class = "edgeContent">
+                            <input type = "text" id = "idEdge" placeholder = "id">
+                            <input type = "text" id = "fromEdge" placeholder = "from">
+                            <input type = "text" id = "toEdge" placeholder = "to">
+                            <img src = "{{ url_for('static', filename='add.png') }}" width = "20%" onClick = "addEdge()">
+                            <img src = "{{ url_for('static', filename='delete.png') }}" width = "20%" onClick = "removeEdge()">
+                            <img src = "{{ url_for('static', filename='update.png') }}" width = "20%" onClick = "updateEdge()">
+                        </section>
+                    </li>
+                </ul>
+                <form name = "data">
+                    <input type = "hidden" name = "start" id = "nodeData" value = "3">
+                    <input type = "hidden" name = "finish" id = "nodeData" value = "4">
+                </form>
+                <button id = "searchButton" onClick = "send()">ПОИСК ПУТИ</button>
+                <script>
+                function send() {
+                    var formData = new FormData(document.forms.data);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/");
+                    xhr.send(formData);
+                    console.log(formData);
+                }
+                </script>
+            </li>
+        </ul>
+        <footer>All Right Reserved - 2016</footer>
+    </body>
+</html>
