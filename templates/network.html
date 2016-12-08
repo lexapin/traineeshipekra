@@ -5,29 +5,27 @@
 <script type="text/javascript">
 
     var nodes, edges, network;
+    var d = [];
+    var k = 0;
+    var container = document.getElementById('mynetwork');
+    var data = {};
+    var options = {
+        interaction:{
+            multiselect: true
+        }
+    }
 
     draw();
-    reset();
-
-    function start() {
-        var container = document.getElementById('mynetwork');
-        var data = {
-            nodes: nodes,
-            edges: edges
-        };
-        var options = {
-            interaction:{
-                multiselect: true
-            }
-        }
-        network = new vis.Network(container, data, options);
-    }
 
     function reset() {
         if (network !== null) {
             nodes = new vis.DataSet();
             edges = new vis.DataSet();
-            start();
+            data = {
+                nodes: nodes,
+                edges: edges
+            };
+            network = new vis.Network(container, data, options);
         }
     }
 
@@ -100,6 +98,7 @@
     }
 
     function draw() {
+        data = {};
         nodes = new vis.DataSet([
             {id: 1, label: 'Node 1'},
             {id: 2, label: 'Node 2'},
@@ -114,21 +113,20 @@
             {from: 2, to: 5},
             {from: 2, to: 4},
         ]);
+        data = {
+            nodes: nodes,
+            edges: edges
+        };
+        network = new vis.Network(container, data, options);
     }
 
-    function paint() {
-        draw();
-        start();
-    }
     network.on("selectNode", function (params) {
-        console.log(params.nodes);
-        document.getElementById('nodeData').value = params.nodes;
-        for (id in params.nodes){
-            var node = network.body.nodes[params.nodes[id]];
-            node.setOptions({
-                color: "#ff0000"
-            });
-        }
+        if (k == 2)
+            k = 0;
+        d[k] = params.nodes[0];
+        document.getElementById('startData').value = d[0];
+        document.getElementById('finishData').value = d[1];
+        k++;
     });
 
 </script>

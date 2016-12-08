@@ -10,6 +10,7 @@
         <link rel = "stylesheet" href = "{{ url_for('static', filename='styles.css') }}">
         <link rel = "stylesheet" href = "{{ url_for('static', filename='vis.css') }}">
         <script type = "text/javascript" src = "{{ url_for('static', filename='vis.js') }}"></script>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     </head>
     <body>
         <header><h1>ПОИСК МИНИМАЛЬНЫХ ПУТЕЙ ГРАФА</h1></header>
@@ -27,7 +28,7 @@
                 {% block content %}{% endblock %}
             </li>
             <li class="flex-item menu">
-                <button class = "addGraph" onClick = "paint()">Создать граф</button>
+                <button class = "addGraph" onClick = "draw()">Создать граф</button>
                 <button class = "clearGraph" onClick = "reset()">Очистить граф</button>
                 <ul class="flex-container sets">
                     <li class="flex-item nodeSet">
@@ -56,19 +57,26 @@
                         </section>
                     </li>
                 </ul>
-                <form name = "data">
-                    <input type = "hidden" name = "start" id = "nodeData" value = "3">
-                    <input type = "hidden" name = "finish" id = "nodeData" value = "4">
+                <form method="POST" id="formx" action="javascript:void(null);" onsubmit="call()">
+                    <input type = "hidden" name = "start" id = "startData" value = "3">
+                    <input type = "hidden" name = "finish" id = "finishData" value = "4">
+                    <input value="ПОИСК ПУТИ" type="submit" id = "searchButton">
                 </form>
-                <button id = "searchButton" onClick = "send()">ПОИСК ПУТИ</button>
-                <script>
-                function send() {
-                    var formData = new FormData(document.forms.data);
-                    var xhr = new XMLHttpRequest();
-                    xhr.open("POST", "/");
-                    xhr.send(formData);
-                    console.log(formData);
-                }
+                <script type="text/javascript" language="javascript">
+                 	function call() {
+                 	  var msg   = $('#formx').serialize();
+                        $.ajax({
+                          type: 'POST',
+                          url: '/',
+                          data: msg,
+                          success: function(data) {
+                            $('#results').html(data);
+                          },
+                          error:  function(xhr, str){
+                	    alert('Возникла ошибка: ' + xhr.responseCode);
+                          }
+                        });
+                    }
                 </script>
             </li>
         </ul>
