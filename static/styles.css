@@ -40,6 +40,19 @@ button, #searchButton {
     color: #ffffff;
 }
 
+#results {
+    margin: 2%;
+    border: 2px solid #res;
+    background: #ffffff;
+    padding: 2%;
+}
+
+#res1, #res2 {
+    color: #ffffff;
+    background: navy;
+    padding: 3px;
+}
+
 .sets {
     padding: 0;
     margin: 1%;
